@@ -1,0 +1,28 @@
+In korean
+
+플러그인과 스크립트를 적용합니다.
+사용할 서버에 들어가 /mv create lobby normal -f flat 을 입력하여 로비로 사용될 맵을 만들어 줍니다
+(/mv set spawn 으로 스폰 지점을 설정 할 수 있습니다.)
+사용할 서버에 들어가 /mv create waitingroom -f flat 을 입력하여 게임 시작을 대기할 맵을 만들어 줍니다
+(위의 lobby와 waitingroom은 꾸미셔도 됩니다)
+
+명령어 설명
+/manhunt : 맨헌트를 시작합니다
+/mhtstop : 맨헌트 스크립트에서 맵을 삭제하는 부분을 테스트 할때 사용됩니다
+/mhcreate : 맨헌트 스크립트에서 맵 만드는 부분을 테스트 할때 사용됩니다
+
+--------------------------------------------------------------------------------------------------------------
+
+In English
+
+Apply plugins and scripts.
+Enter the server you want to use and type /mv create lobby normal -f flat to create a map that will be used as a lobby.
+(You can set the spawn point with /mv set spawn .)
+Enter the server you want to use and type /mv create waitingroom -f flat to create a map to wait for the game to start.
+(You can decorate the lobby and waiting
+
+
+Command Description
+/manhunt : start manhunt
+/mhtstop: Used to test the map deletion part in the manhunt script
+/mhcreate: Used to test the map creation part in the manhunt script
