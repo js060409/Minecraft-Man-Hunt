@@ -1,0 +1,186 @@
+command /operation:
+    trigger:
+        open chest with 5 rows named "관리" to player
+        format slot 22 of player with grass named "&bOp 지급" with lore "클릭하여 권한 부여" to close then run [execute console command "op %player%"]
+
+
+
+
+command /mhstart:
+    trigger:
+        broadcast "제작: &6GSHoward"
+        wait 3 seconds
+        broadcast "&b5&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b4&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b3&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b2&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b1&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+
+        loop all players:
+            execute console command "gamemode adventure %loop-player%"
+
+            execute console command "clear %loop-player%"
+            execute console command "effect give %player% minecraft:night_vision 1000000 255 true"
+            execute console command "mv tp %loop-player% waitingroom"
+        broadcast "&6Manhunt &f대기실에 입장했습니다."
+        broadcast "<ttp:&3클릭하여 게임을 시작합니다.><cmd:/mhcreate>&6[ 시작하기 ]<reset>를 눌러 게임을 시작하세요"
+
+command /mhcreate:
+    trigger:
+        broadcast "&6Manhunt &f맵을 생성합니다"
+
+        execute console command "mv create manhuntworld_the_nether nether"
+        execute console command "mv create manhuntworld_the_end end"
+        execute console command "mv create manhuntworld_wild normal"
+
+        broadcast "&6Manhunt &f맵 생성 완료! "
+        broadcast "&b5&f초 후 월드로 이동합니다."
+        wait 1 seconds
+        broadcast "&b5"
+        wait 1 seconds
+        broadcast "&b4"
+        wait 1 seconds
+        broadcast "&b3"
+        wait 1 seconds
+        broadcast "&b2"
+        wait 1 seconds
+        broadcast "&b1"
+        wait 1 seconds
+        execute console command "mvnp link end manhuntworld_wild manhuntworld_the_end"
+        execute console command "mvnp link end manhuntworld_the_end manhuntworld_wild"
+        execute console command "mvnp link end manhuntworld_wild manhuntworld_the_nether"
+        execute console command "mvnp link end manhuntworld_the_nether manhuntworld_the_wild"
+        execute console command "mvnp link end manhuntworld_the_nether manhuntworld_the_end"
+        execute console command "mvnp link end manhuntworld_the_end manhuntworld_the_nether"
+        loop all players:
+            execute console command "mv tp %loop-player% manhuntworld_wild"
+
+
+        execute console command "mv modify set pvp false manhuntworld_wild"
+        broadcast "&b20&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 5 seconds
+        broadcast "&b15&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 5 seconds
+        broadcast "&b10&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 5 seconds
+        broadcast "&b5&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 1 seconds
+        broadcast "&b4&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 1 seconds
+        broadcast "&b3&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 1 seconds
+        broadcast "&b2&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 1 seconds
+        broadcast "&b1&f초 후 &6Manhunt PVP &f가 활성됩니다."
+        wait 1 seconds
+        execute console command "mv modify set pvp true manhuntworld_wild"
+        broadcast "&6Manhunt PVP &f가 활성되었습니다."
+
+
+command /mhstop:
+    trigger:
+        broadcast "20초 내로 사용한 Manhunt 맵을 삭제합니다"
+        wait 1 seconds
+
+        execute console command "mv delete manhuntworld_wild"
+        execute console command "mv confirm"
+        wait 10 seconds
+
+        execute console command "mv delete manhuntworld_the_end"
+        execute console command "mv confirm"
+        wait 10 seconds
+
+        execute console command "mv delete manhuntworld_the_nether"
+        execute console command "mv confirm"
+        broadcast "&e삭제완료!"
+
+        execute console command "team empty Hunters"
+        execute console command "team empty Runner"
+        loop all players:
+            execute console command "mv tp loop-player lobby"
+            execute console command "clear %loop-players%"
+
+
+
+command /randomchoose:
+    trigger:
+
+        execute console command "team empty Hunters"
+        execute console command "team empty Runner"
+        loop all players:
+            if loop-player's world is "waitingroom":
+                add loop-player to {_random::*}
+            execute console command "team join Hunters %loop-player%"
+        set {runner} to random element out of {_random::*}
+        broadcast "%{runner}%"
+        execute console command "team leave %{runner}% "
+        execute console command "team join Runner %{runner}%"
+        broadcast "&6Runner&f는%{runner}%입니다 "
+
+
+
+on death of enderdragon:
+
+    wait 3 seconds
+    execute console command "title @a title ""&eRunner가 &f승리했습니다"""
+
+on death of player:
+     if victim is {runner}:
+          execute console command "title @a title ""&eHunter가 &f승리했습니다"""
+          broadcast "<ttp:&3클릭하여 게임을 종료합니다.><cmd:/mhstop>&6[ 종료하기 ]<reset>를 눌러 게임을 종료하세요"
+
+
+
+
+
+
+
+command /mhfinal:
+
+    trigger:
+        broadcast "제작: &6GSHoward"
+        wait 3 seconds
+        broadcast "&b5&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b4&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b3&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b2&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b1&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+
+        loop all players:
+            execute console command "gamemode adventure %loop-player%"
+
+            execute console command "clear %loop-player%"
+            execute console command "effect give %player% minecraft:night_vision 1000000 255 true"
+            execute console command "mv tp %loop-player% waitingroom"
+        broadcast "&6Manhunt &f대기실에 입장했습니다."
+        broadcast "&6Runner&f는%{runner}%입니다 "
+        broadcast "<ttp:&3클릭하여 게임을 시작합니다.><cmd:/mhcreate>&6[ 시작하기 ]<reset>를 눌러 게임을 시작하세요"
+
+on death of enderdragon:
+
+    wait 3 seconds
+    execute console command "title @a title ""&eRunner가 &f승리했습니다"""
+    broadcast "<ttp:&3클릭하여 게임을 종료합니다.><cmd:/mhstop>&6[ 종료하기 ]<reset>를 눌러 게임을 종료하세요"
+
+on death of player:
+     if victim is {runner}:
+          execute console command "title @a title ""&eHunter가 &f승리했습니다"""
+          broadcast "<ttp:&3클릭하여 게임을 종료합니다.><cmd:/mhstop>&6[ 종료하기 ]<reset>를 눌러 게임을 종료하세요"
+
+
+
+
+
+
+
+

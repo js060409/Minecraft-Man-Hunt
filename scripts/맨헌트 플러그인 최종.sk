@@ -1,0 +1,55 @@
+command /manhunter:
+
+    trigger:
+        broadcast "제작: &6GSHoward"
+        wait 3 seconds
+        broadcast "&b5&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b4&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b3&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b2&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+        broadcast "&b1&f초 후 &6Manhunt &f대기실에 입장합니다."
+        wait 1 seconds
+
+        loop all players:
+            execute console command "gamemode adventure %loop-player%"
+
+            execute console command "clear %loop-player%"
+            execute console command "effect give %player% minecraft:night_vision 1000000 255 true"
+            execute console command "mv tp %loop-player% waitingroom"
+        broadcast "&6Manhunt &f대기실에 입장했습니다."
+
+        execute console command "team empty Hunters"
+        execute console command "team empty Runner"
+        loop all players:
+            if loop-player's world is "waitingroom":
+                add loop-player to {_random::*}
+            execute console command "team join Hunters %loop-player%"
+        set {runner} to random element out of {_random::*}
+        broadcast "%{runner}%"
+        execute console command "team leave %{runner}% "
+        execute console command "team join Runner %{runner}%"
+        broadcast "&6Runner&f는%{runner}%입니다 "
+        broadcast "<ttp:&3클릭하여 게임을 시작합니다.><cmd:/mhcreate>&6[ 시작하기 ]<reset>를 눌러 게임을 시작하세요"
+
+on death of enderdragon:
+
+    wait 3 seconds
+    execute console command "title @a title ""&eRunner가 &f승리했습니다"""
+    broadcast "<ttp:&3클릭하여 게임을 종료합니다.><cmd:/mhstop>&6[ 종료하기 ]<reset>를 눌러 게임을 종료하세요"
+
+on death of player:
+     if victim is {runner}:
+          execute console command "title @a title ""&eHunter가 &f승리했습니다"""
+          broadcast "<ttp:&3클릭하여 게임을 종료합니다.><cmd:/mhstop>&6[ 종료하기 ]<reset>를 눌러 게임을 종료하세요"
+
+
+
+
+
+
+
+
